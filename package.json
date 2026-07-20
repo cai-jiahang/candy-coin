@@ -1,0 +1,9 @@
+{
+  "name": "candy-coins-master",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "node serve.cjs",
+    "build": "node -e \"console.log('Static master is ready.')\""
+  }
+}

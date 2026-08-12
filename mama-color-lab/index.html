@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="马马 MAMA IP 数字展览。藏在颜料管里的三原色小马精灵，以色彩、绘画与珍惜颜料为核心的角色设计全案。">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://cai-jiahang.github.io/candy-coin/mama-color-lab/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="马马 MAMA | IP 数字展览">
+  <meta property="og:description" content="藏在颜料管里的三原色小马精灵。Think · Draw · Dream.">
+  <meta property="og:url" content="https://cai-jiahang.github.io/candy-coin/mama-color-lab/">
+  <meta property="og:image" content="https://cai-jiahang.github.io/candy-coin/mama-color-lab/assets/images/hero.webp">
+  <meta property="og:image:width" content="2560">
+  <meta property="og:image:height" content="1810">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="马马 MAMA | IP 数字展览">
+  <meta name="twitter:description" content="藏在颜料管里的三原色小马精灵。">
+  <meta name="twitter:image" content="https://cai-jiahang.github.io/candy-coin/mama-color-lab/assets/images/hero.webp">
+  <title>马马 MAMA | IP 数字展览</title>
+  <style>
+    :root {
+      --ink: #161615;
+      --ink-soft: #20201e;
+      --paper: #f2eee5;
+      --muted: #aaa69c;
+      --red: #ef3528;
+      --yellow: #f5c51a;
+      --blue: #1f6eb7;
+      --green: #397239;
+      --night: #18285f;
+      --line: rgba(242, 238, 229, .18);
+      --page: min(90vw, 1520px);
+      --nav-height: 68px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--ink); }
+    body {
+      margin: 0;
+      color: var(--paper);
+      background: var(--ink);
+      font-family: Arial, "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    body.modal-open { overflow: hidden; }
+    button, a { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    ::selection { color: var(--ink); background: var(--yellow); }
+
+    .progress {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 80;
+      height: 4px;
+      background: rgba(242, 238, 229, .08);
+    }
+    .progress__fill {
+      height: 100%;
+      width: 100%;
+      transform: scaleX(0);
+      transform-origin: left center;
+      background: linear-gradient(90deg, var(--red) 0 34%, var(--yellow) 34% 67%, var(--blue) 67% 100%);
+    }
+    @supports (animation-timeline: scroll()) {
+      .progress__fill {
+        animation: reading-progress linear both;
+        animation-timeline: scroll(root);
+      }
+      @keyframes reading-progress { to { transform: scaleX(1); } }
+    }
+
+    .nav {
+      position: fixed;
+      z-index: 60;
+      top: 4px;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      background: rgba(22, 22, 21, .9);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .nav__inner {
+      width: var(--page);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 10px;
+      white-space: nowrap;
+      font-weight: 900;
+      letter-spacing: -.04em;
+    }
+    .brand small {
+      color: var(--yellow);
+      font-size: 10px;
+      letter-spacing: .12em;
+    }
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: clamp(16px, 2.4vw, 40px);
+      white-space: nowrap;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .nav__links a { transition: color .25s ease; }
+    .nav__links a:hover, .nav__links a:focus-visible { color: var(--paper); }
+
+    main { display: block; }
+    .section {
+      position: relative;
+      width: 100%;
+      padding: clamp(92px, 11vw, 170px) 0;
+      scroll-margin-top: var(--nav-height);
+    }
+    .section__inner { width: var(--page); margin: 0 auto; }
+    .section__title {
+      max-width: 12ch;
+      margin: 0;
+      font-size: clamp(42px, 7.4vw, 126px);
+      line-height: .88;
+      letter-spacing: -.07em;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+    .section__title.cn {
+      max-width: 8ch;
+      line-height: .98;
+      letter-spacing: -.08em;
+    }
+    .section__lead {
+      max-width: 36ch;
+      margin: 28px 0 0;
+      color: var(--muted);
+      font-size: clamp(16px, 1.5vw, 23px);
+      line-height: 1.7;
+    }
+    .kicker {
+      margin: 0 0 28px;
+      color: var(--yellow);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .accent-red { color: var(--red); }
+    .accent-yellow { color: var(--yellow); }
+    .accent-blue { color: var(--blue); }
+
+    .hero {
+      min-height: 100dvh;
+      padding: calc(var(--nav-height) + 44px) 0 48px;
+      display: grid;
+      align-items: center;
+      overflow: clip;
+    }
+    .hero__grid {
+      width: var(--page);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(280px, .7fr) minmax(0, 1.3fr);
+      gap: clamp(30px, 6vw, 100px);
+      align-items: center;
+    }
+    .hero__copy { position: relative; z-index: 2; }
+    .hero__title {
+      margin: 0;
+      font-size: clamp(76px, 12vw, 220px);
+      line-height: .72;
+      letter-spacing: -.09em;
+      font-weight: 900;
+    }
+    .hero__title span { display: block; color: var(--yellow); }
+    .hero__copy p {
+      max-width: 22ch;
+      margin: 34px 0 0;
+      color: var(--paper);
+      font-size: clamp(17px, 1.55vw, 24px);
+      font-weight: 700;
+      line-height: 1.55;
+    }
+    .hero__art { position: relative; }
+    .hero__art::before {
+      content: "";
+      position: absolute;
+      inset: -10% -8% -12% 22%;
+      background: var(--blue);
+      z-index: -1;
+    }
+    .hero__image {
+      width: 100%;
+      aspect-ratio: 4961 / 3508;
+      object-fit: contain;
+      box-shadow: 0 34px 90px rgba(0, 0, 0, .38);
+    }
+
+    .manifesto {
+      padding: 48px 0;
+      background: var(--yellow);
+      color: var(--ink);
+      overflow: hidden;
+    }
+    .manifesto__line {
+      width: max-content;
+      margin: 0;
+      font-size: clamp(46px, 8vw, 130px);
+      font-weight: 900;
+      line-height: .9;
+      letter-spacing: -.07em;
+      white-space: nowrap;
+      animation: manifesto-drift 18s linear infinite alternate;
+    }
+    @keyframes manifesto-drift { to { transform: translateX(-20vw); } }
+
+    .world__grid {
+      display: grid;
+      grid-template-columns: minmax(250px, .48fr) minmax(0, 1.52fr);
+      gap: clamp(36px, 7vw, 120px);
+      align-items: start;
+    }
+    .world__copy { position: sticky; top: calc(var(--nav-height) + 52px); }
+    .art-block { margin: 0; }
+    .art-button {
+      width: 100%;
+      padding: 0;
+      color: inherit;
+      background: transparent;
+      border: 0;
+      cursor: zoom-in;
+      text-align: left;
+    }
+    .art-button:focus-visible { outline: 4px solid var(--yellow); outline-offset: 8px; }
+    .art-button img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      box-shadow: 0 32px 90px rgba(0, 0, 0, .3);
+      transition: transform .7s cubic-bezier(.16, 1, .3, 1), filter .35s ease;
+    }
+    .art-button:hover img { transform: translateY(-6px); filter: saturate(1.04); }
+    .caption {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .caption strong { color: var(--paper); }
+
+    .archive { border-top: 1px solid var(--line); }
+    .archive__head {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 40px;
+      align-items: end;
+      margin-bottom: clamp(54px, 7vw, 100px);
+    }
+    .archive__statement {
+      max-width: 28ch;
+      margin: 0 0 6px auto;
+      font-size: clamp(18px, 2vw, 30px);
+      line-height: 1.5;
+      font-weight: 700;
+    }
+    .archive__stack { display: grid; gap: clamp(50px, 8vw, 120px); }
+    .archive__stack .art-block:nth-child(2) { width: 86%; margin-left: auto; }
+
+    .personality {
+      background: var(--yellow);
+      color: var(--ink);
+    }
+    .personality .kicker, .personality .section__lead { color: rgba(22, 22, 21, .68); }
+    .personality__head {
+      width: var(--page);
+      margin: 0 auto clamp(52px, 7vw, 96px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: end;
+    }
+    .personality__head .section__lead { margin-left: auto; }
+    .gallery {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: min(82vw, 1240px);
+      gap: clamp(28px, 4vw, 62px);
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      scroll-snap-type: x mandatory;
+      padding: 0 max(5vw, calc((100vw - 1520px) / 2)) 38px;
+      scrollbar-color: var(--ink) rgba(22, 22, 21, .18);
+    }
+    .gallery .art-block { scroll-snap-align: center; }
+    .gallery .art-button img { box-shadow: 18px 18px 0 var(--ink); }
+    .gallery .caption, .gallery .caption strong { color: var(--ink); }
+
+    .day { padding-bottom: clamp(110px, 14vw, 220px); }
+    .day__layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(260px, .55fr);
+      gap: clamp(36px, 7vw, 120px);
+      align-items: center;
+    }
+    .day__text { order: 2; }
+    .day__text .section__title { font-size: clamp(48px, 6vw, 104px); }
+    .day__text blockquote {
+      margin: 34px 0 0;
+      padding-left: 22px;
+      border-left: 8px solid var(--red);
+      font-size: clamp(18px, 2vw, 30px);
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    .themes { background: var(--green); }
+    .themes__head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, .7fr);
+      gap: 40px;
+      align-items: end;
+      margin-bottom: clamp(50px, 7vw, 94px);
+    }
+    .traits {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 38px;
+      border-top: 1px solid rgba(242, 238, 229, .5);
+    }
+    .trait { padding: 24px 24px 0 0; }
+    .trait + .trait { padding-left: 24px; border-left: 1px solid rgba(242, 238, 229, .5); }
+    .trait strong { display: block; margin-bottom: 8px; font-size: 18px; }
+    .trait span { color: rgba(242, 238, 229, .72); line-height: 1.6; }
+
+    .system { padding-top: clamp(110px, 14vw, 220px); }
+    .system__intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: end;
+      margin-bottom: clamp(50px, 7vw, 100px);
+    }
+    .system__intro .section__lead { margin-left: auto; }
+    .system__grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: clamp(30px, 5vw, 70px);
+      align-items: start;
+    }
+    .system__grid .art-block:nth-child(2) { margin-top: clamp(60px, 10vw, 180px); }
+    .system__grid .art-button img { box-shadow: none; }
+
+    .final {
+      min-height: 100dvh;
+      padding: clamp(100px, 12vw, 180px) 0 70px;
+      display: grid;
+      align-items: center;
+      background: var(--night);
+    }
+    .final__grid {
+      width: var(--page);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(270px, .48fr) minmax(0, 1.52fr);
+      gap: clamp(34px, 7vw, 110px);
+      align-items: center;
+    }
+    .final__copy h2 {
+      margin: 0;
+      font-size: clamp(48px, 7vw, 116px);
+      line-height: .9;
+      letter-spacing: -.07em;
+    }
+    .final__copy p {
+      max-width: 20ch;
+      margin: 34px 0 0;
+      font-size: clamp(17px, 1.7vw, 25px);
+      line-height: 1.6;
+      font-weight: 700;
+    }
+    .final .art-button img { box-shadow: 24px 24px 0 rgba(22, 22, 21, .75); }
+
+    .footer {
+      width: var(--page);
+      margin: 0 auto;
+      padding: 30px 0 42px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+    }
+    .footer__colors { display: flex; width: 132px; height: 10px; }
+    .footer__colors span { flex: 1; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1);
+    }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      place-items: center;
+      padding: 30px;
+      background: rgba(10, 10, 9, .96);
+    }
+    .lightbox.is-open { display: grid; }
+    .lightbox__image {
+      max-width: min(94vw, 1700px);
+      max-height: 88dvh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+    .lightbox__close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      min-width: 46px;
+      height: 46px;
+      padding: 0 15px;
+      color: var(--paper);
+      background: var(--ink-soft);
+      border: 1px solid rgba(242, 238, 229, .35);
+      cursor: pointer;
+      font-weight: 900;
+    }
+    .lightbox__close:hover, .lightbox__close:focus-visible { color: var(--ink); background: var(--yellow); outline: none; }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      pointer-events: none;
+    }
+    .loader span {
+      transform-origin: top;
+      transition: transform .8s cubic-bezier(.76, 0, .24, 1);
+    }
+    .loader span:nth-child(1) { background: var(--red); transition-delay: .06s; }
+    .loader span:nth-child(2) { background: var(--yellow); transition-delay: .12s; }
+    .loader span:nth-child(3) { background: var(--blue); transition-delay: .18s; }
+    .loader span:nth-child(4) { background: var(--paper); transition-delay: .24s; }
+    .loader.is-done span { transform: scaleY(0); }
+
+    @media (max-width: 900px) {
+      :root { --page: min(92vw, 720px); --nav-height: 62px; }
+      .nav__links { display: none; }
+      .hero { min-height: auto; padding-top: calc(var(--nav-height) + 54px); }
+      .hero__grid, .world__grid, .archive__head, .personality__head, .day__layout,
+      .themes__head, .system__intro, .system__grid, .final__grid {
+        grid-template-columns: 1fr;
+      }
+      .hero__grid { gap: 52px; }
+      .hero__title { font-size: clamp(86px, 24vw, 160px); }
+      .hero__art::before { inset: -7% -4% -8% 20%; }
+      .world__copy { position: static; }
+      .archive__statement, .personality__head .section__lead, .system__intro .section__lead { margin-left: 0; }
+      .archive__stack .art-block:nth-child(2) { width: 100%; }
+      .personality__head { width: var(--page); }
+      .gallery { grid-auto-columns: 88vw; padding-inline: 6vw; }
+      .day__text { order: 0; }
+      .traits { grid-template-columns: 1fr; }
+      .trait, .trait + .trait { padding: 20px 0; border-left: 0; border-bottom: 1px solid rgba(242, 238, 229, .35); }
+      .system__grid .art-block:nth-child(2) { margin-top: 0; }
+      .final { min-height: auto; }
+      .footer { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+      .loader { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <div class="progress" aria-hidden="true"><div class="progress__fill"></div></div>
+
+  <header class="nav">
+    <div class="nav__inner">
+      <a class="brand" href="#start" aria-label="返回开场">MAMA <small>COLOR LAB</small></a>
+      <nav class="nav__links" aria-label="章节导航">
+        <a href="#world">世界观</a>
+        <a href="#archive">角色档案</a>
+        <a href="#personality">性格动作</a>
+        <a href="#themes">兴趣世界</a>
+        <a href="#system">产品应用</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="start">
+      <div class="hero__grid">
+        <div class="hero__copy reveal">
+          <h1 class="hero__title">MA<span>MA</span></h1>
+          <p>藏在颜料管里的三原色小马精灵。认真守护每一滴颜色。</p>
+        </div>
+        <figure class="hero__art reveal">
+          <button class="art-button" type="button" data-lightbox="assets/images/hero.webp" aria-label="放大查看马马封面图">
+            <img class="hero__image" src="assets/images/hero.webp" alt="马马 MAMA 色彩是一种生命封面" fetchpriority="high">
+          </button>
+        </figure>
+      </div>
+    </section>
+
+    <section class="manifesto" aria-label="核心宣言">
+      <p class="manifesto__line">COLOR IS A LIVING MATERIAL. COLOR IS A LIVING MATERIAL.</p>
+    </section>
+
+    <section class="section" id="world">
+      <div class="section__inner world__grid">
+        <div class="world__copy reveal">
+          <p class="kicker">INSIDE EVERY TUBE</p>
+          <h2 class="section__title cn">每一管颜料里都有一个正在工作的颜色生命</h2>
+          <p class="section__lead">颜料管打开，马马醒来。它跃上画纸，守住溢色，也在创作结束后整理工具。</p>
+        </div>
+        <figure class="art-block reveal">
+          <button class="art-button" type="button" data-lightbox="assets/images/world.webp" aria-label="放大查看颜料管世界观图板">
+            <img src="assets/images/world.webp" alt="马马的颜料管工作日世界观图板" loading="lazy" decoding="async">
+          </button>
+          <figcaption class="caption"><strong>颜料管工作日</strong><span>睡眠、跃上画纸、守住颜色、整理工具</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section archive" id="archive">
+      <div class="section__inner">
+        <div class="archive__head reveal">
+          <div>
+            <p class="kicker">CHARACTER ARCHIVE</p>
+            <h2 class="section__title">ONE FACE.<br><span class="accent-yellow">THREE COLORS.</span></h2>
+          </div>
+          <p class="archive__statement">四格脸、画笔鬃毛与笔触尾巴，共同构成马马最稳定的角色 DNA。</p>
+        </div>
+        <div class="archive__stack">
+          <figure class="art-block reveal">
+            <button class="art-button" type="button" data-lightbox="assets/images/archive.webp" aria-label="放大查看角色介绍图板">
+              <img src="assets/images/archive.webp" alt="马马封面与角色介绍图板" loading="lazy" decoding="async">
+            </button>
+            <figcaption class="caption"><strong>身份档案</strong><span>三原色小马精灵，认真、固执、珍惜颜色</span></figcaption>
+          </figure>
+          <figure class="art-block reveal">
+            <button class="art-button" type="button" data-lightbox="assets/images/dna.webp" aria-label="放大查看角色 DNA 图板">
+              <img src="assets/images/dna.webp" alt="马马三视图和角色 DNA 图板" loading="lazy" decoding="async">
+            </button>
+            <figcaption class="caption"><strong>识别规则</strong><span>正面、侧面、背面与最小视觉资产</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section personality" id="personality">
+      <div class="personality__head reveal">
+        <div>
+          <h2 class="section__title">MOOD MAKES CHARACTER.</h2>
+        </div>
+        <p class="section__lead">马马不是一直微笑的吉祥物。它认真、固执，也会兴奋、困惑、害羞和得意。</p>
+      </div>
+      <div class="gallery" aria-label="表情与动作横向画廊">
+        <figure class="art-block reveal">
+          <button class="art-button" type="button" data-lightbox="assets/images/mood.webp" aria-label="放大查看表情系统图板">
+            <img src="assets/images/mood.webp" alt="马马标准表情系统图板" loading="lazy" decoding="async">
+          </button>
+          <figcaption class="caption"><strong>情绪不是面具</strong><span>默认气质与十种情绪</span></figcaption>
+        </figure>
+        <figure class="art-block reveal">
+          <button class="art-button" type="button" data-lightbox="assets/images/identities.webp" aria-label="放大查看动作和颜色身份图板">
+            <img src="assets/images/identities.webp" alt="马马动作与颜色身份图板" loading="lazy" decoding="async">
+          </button>
+          <figcaption class="caption"><strong>动作成为身份</strong><span>创作者、守护者、思考者、梦想家与探索者</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section day">
+      <div class="section__inner day__layout">
+        <figure class="art-block reveal">
+          <button class="art-button" type="button" data-lightbox="assets/images/day.webp" aria-label="放大查看马马的一天图板">
+            <img src="assets/images/day.webp" alt="马马清洁、混色、取色、创作、整理和收纳的一天" loading="lazy" decoding="async">
+          </button>
+        </figure>
+        <div class="day__text reveal">
+          <h2 class="section__title">MAMA'S DAY</h2>
+          <p class="section__lead">清洁、混色、取色、创作、整理、收纳。</p>
+          <blockquote>珍惜颜料不是一句口号，而是每天都会完成的动作。</blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="section themes" id="themes">
+      <div class="section__inner">
+        <div class="themes__head reveal">
+          <h2 class="section__title">LOOK CLOSER.<br>LOOK <span class="accent-yellow">UP.</span></h2>
+          <div>
+            <p class="section__lead">颜料管之外，马马也有自己的兴趣。它观察自然，热爱日常，也喜欢把星空重新想象。</p>
+            <div class="traits">
+              <div class="trait"><strong>森林</strong><span>细心与好奇</span></div>
+              <div class="trait"><strong>日常</strong><span>热情与分享</span></div>
+              <div class="trait"><strong>星空</strong><span>安静与想象</span></div>
+            </div>
+          </div>
+        </div>
+        <figure class="art-block reveal">
+          <button class="art-button" type="button" data-lightbox="assets/images/themes.webp" aria-label="放大查看主题身份卡图板">
+            <img src="assets/images/themes.webp" alt="马马星空观察员和森林颜色守护员主题身份卡" loading="lazy" decoding="async">
+          </button>
+          <figcaption class="caption"><strong>主题身份</strong><span>同一角色的不同兴趣与性格切面</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section system" id="system">
+      <div class="section__inner">
+        <div class="system__intro reveal">
+          <h2 class="section__title">FROM COLOR TO LIFE.</h2>
+          <p class="section__lead">角色不只停留在画纸。马马进入颜料、画笔、调色工具、包装和公共空间，形成完整的视觉应用系统。</p>
+        </div>
+        <div class="system__grid">
+          <figure class="art-block reveal">
+            <button class="art-button" type="button" data-lightbox="assets/images/products.webp" aria-label="放大查看画材产品系统图板">
+              <img src="assets/images/products.webp" alt="马马画材与视觉资产系统图板" loading="lazy" decoding="async">
+            </button>
+            <figcaption class="caption"><strong>MAMA Color Lab</strong><span>包装、画笔、调色盘、挤压器和色彩套装</span></figcaption>
+          </figure>
+          <figure class="art-block reveal">
+            <button class="art-button" type="button" data-lightbox="assets/images/applications.webp" aria-label="放大查看应用与空间传播图板">
+              <img src="assets/images/applications.webp" alt="马马应用与公共空间传播图板" loading="lazy" decoding="async">
+            </button>
+            <figcaption class="caption"><strong>Color in the City</strong><span>从画材到公共空间</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="final" id="final">
+      <div class="final__grid">
+        <div class="final__copy reveal">
+          <h2>LOOK<br><span class="accent-yellow">UP.</span><br>MIX<br><span class="accent-red">MORE.</span></h2>
+          <p>每一管颜料里，都藏着一个等待被发现的颜色世界。</p>
+        </div>
+        <figure class="art-block reveal">
+          <button class="art-button" type="button" data-lightbox="assets/images/final.webp" aria-label="放大查看星空观察站宣传海报">
+            <img src="assets/images/final.webp" alt="马马星空观察站横版宣传海报" loading="lazy" decoding="async">
+          </button>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>MAMA COLOR LAB / THINK. DRAW. DREAM.</span>
+    <div class="footer__colors" aria-label="马马品牌色">
+      <span style="background:var(--red)"></span><span style="background:var(--yellow)"></span><span style="background:var(--blue)"></span><span style="background:var(--paper)"></span>
+    </div>
+  </footer>
+
+  <div class="lightbox" role="dialog" aria-modal="true" aria-label="大图查看" aria-hidden="true">
+    <button class="lightbox__close" type="button" aria-label="关闭大图">关闭</button>
+    <img class="lightbox__image" src="" alt="">
+  </div>
+
+  <script>
+    (() => {
+      const loader = document.querySelector('.loader');
+      const finishLoading = () => {
+        loader.classList.add('is-done');
+        window.setTimeout(() => loader.remove(), 1100);
+      };
+      if (document.readyState === 'complete') finishLoading();
+      else window.addEventListener('load', finishLoading, { once: true });
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const reveals = document.querySelectorAll('.reveal');
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        reveals.forEach(el => el.classList.add('is-visible'));
+      } else {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: .14, rootMargin: '0px 0px -7% 0px' });
+        reveals.forEach(el => observer.observe(el));
+      }
+
+      const lightbox = document.querySelector('.lightbox');
+      const lightboxImage = document.querySelector('.lightbox__image');
+      const closeButton = document.querySelector('.lightbox__close');
+      let lastTrigger = null;
+
+      const closeLightbox = () => {
+        lightbox.classList.remove('is-open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        lightboxImage.src = '';
+        lightboxImage.alt = '';
+        document.body.classList.remove('modal-open');
+        if (lastTrigger) lastTrigger.focus();
+      };
+
+      document.querySelectorAll('[data-lightbox]').forEach(button => {
+        button.addEventListener('click', () => {
+          lastTrigger = button;
+          lightboxImage.src = button.dataset.lightbox;
+          lightboxImage.alt = button.querySelector('img').alt;
+          lightbox.classList.add('is-open');
+          lightbox.setAttribute('aria-hidden', 'false');
+          document.body.classList.add('modal-open');
+          closeButton.focus();
+        });
+      });
+
+      closeButton.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', event => {
+        if (event.target === lightbox) closeLightbox();
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && lightbox.classList.contains('is-open')) closeLightbox();
+      });
+    })();
+  </script>
+</body>
+</html>

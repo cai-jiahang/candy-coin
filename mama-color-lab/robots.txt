@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cai-jiahang.github.io/candy-coin/mama-color-lab/sitemap.xml

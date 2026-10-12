@@ -120,7 +120,7 @@
         ' aria-label="Open project ' + project.number + ': ' + project.title + '">' +
           projectTitle +
           '<span class="object-status">' + project.status + '</span>' +
-          '<span class="object-arrow" aria-hidden="true">↗</span>' +
+          '<span class="object-arrow" aria-hidden="true"></span>' +
         '</a>';
     }).join("");
 
@@ -301,29 +301,58 @@
   }
 
   function renderContact() {
-    var contactMethods = [
-      { label: "Instagram", note: "Link to be added" },
-      { label: "Are.na", note: "Link to be added" },
-      { label: "Email", note: "Address to be added" }
-    ];
-    var rows = contactMethods.map(function (method) {
-      return '<div class="contact-row"><span>' + method.label + '</span><small>' + method.note + '</small></div>';
-    }).join("");
-
     renderLayout(
       '<section class="contact-page page-enter">' +
         '<div class="contact-intro">' +
           '<p class="eyebrow">Contact · creative connections</p>' +
           '<h1>Say hello.</h1>' +
-          '<p>For projects, conversations and shared visual interests.</p>' +
+          '<p>For projects, collaborations, or just saying hello.</p>' +
         '</div>' +
         '<div class="contact-panel">' +
-          rows +
-          '<p class="contact-note">Real contact links can be added here when ready.</p>' +
+          '<a class="contact-email" href="mailto:1623234552@qq.com">' +
+            '<span>Email</span>' +
+            '<strong>1623234552@qq.com</strong>' +
+          '</a>' +
+          '<form class="contact-form" id="contact-form" action="https://formspree.io/f/mqpzodjr" method="POST">' +
+            '<div class="contact-fields">' +
+              '<label><span>Your name</span><input type="text" name="name" autocomplete="name" placeholder="Optional"></label>' +
+              '<label><span>Your email</span><input type="email" name="email" autocomplete="email" placeholder="So I can reply" required></label>' +
+            '</div>' +
+            '<label><span>Leave a message</span><textarea name="message" rows="6" placeholder="Write something..." required></textarea></label>' +
+            '<input type="hidden" name="subject" value="New message from CANDY COINS">' +
+            '<div class="contact-form-footer">' +
+              '<p class="contact-form-status" id="contact-form-status" aria-live="polite">Your details are only used to reply.</p>' +
+              '<button class="contact-submit" type="submit"><span>Send message</span><i aria-hidden="true"></i></button>' +
+            '</div>' +
+          '</form>' +
         '</div>' +
       '</section>',
       "contact"
     );
+
+    var form = document.getElementById("contact-form");
+    var status = document.getElementById("contact-form-status");
+    var submit = form.querySelector("button[type='submit']");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      submit.disabled = true;
+      status.textContent = "Sending...";
+
+      fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" }
+      }).then(function (response) {
+        if (!response.ok) throw new Error("Form submission failed");
+        form.reset();
+        status.textContent = "Message sent. Thank you for stopping by.";
+      }).catch(function () {
+        status.textContent = "Something went wrong. Please email me directly.";
+      }).finally(function () {
+        submit.disabled = false;
+      });
+    });
   }
 
   function renderNotFound() {

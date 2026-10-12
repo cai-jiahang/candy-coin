@@ -4,6 +4,7 @@
   var content = window.CANDY_CONTENT;
   var app = document.getElementById("app");
   var activeArchiveCategory = "all";
+  var activeEmbeddedFrame = null;
   var eras = [
     { name: "White Era", color: "#ffffff", border: "#777777" },
     { name: "Candy Pink Era", color: "#f5b4b0", border: "#ef5547" },
@@ -72,6 +73,7 @@
   }
 
   function renderLayout(pageHtml, active) {
+    activeEmbeddedFrame = null;
     app.innerHTML =
       '<div class="site-shell">' +
         '<header class="site-header">' +
@@ -108,12 +110,13 @@
   }
 
   function renderProjects() {
-    var objects = content.projects.map(function (project) {
+    var objects = content.projects.filter(function (project) { return content.featuredIds.indexOf(project.id) !== -1; }).map(function (project) {
       var projectTitle = project.id === "breeze"
         ? '<img class="breeze-mark" src="src/assets/projects/breeze/breeze-mark.png" alt="Breeze">'
         : '<strong>' + project.title + '</strong>';
-      return '<a href="#/projects/' + project.id + '"' +
-        ' class="project-object project-object--' + project.id + ' shape--' + project.shape + ' color--' + project.color + '"' +
+      var projectHref = project.link || "#/projects/" + project.id;
+      return '<a href="' + projectHref + '"' +
+        ' data-project-open class="project-object project-object--' + (project.id === "mama" ? "future-collection" : project.id) + ' shape--' + project.shape + ' color--' + project.color + '"' +
         ' aria-label="Open project ' + project.number + ': ' + project.title + '">' +
           projectTitle +
           '<span class="object-status">' + project.status + '</span>' +
@@ -129,15 +132,30 @@
           '<p class="label-pill">Creative label by Cai Jiahang</p>' +
         '</header>' +
         '<div class="project-field" aria-label="Project collection">' + objects + '</div>' +
+        '<a class="text-link collection-more" href="#/archive">View all projects &#8594;</a>' +
       '</section>',
       "projects"
     );
   }
 
-  function renderProjectDetail(projectId) {
+  function renderProjectDetail(projectId, fromArchive) {
     var project = content.projects.find(function (item) { return item.id === projectId; });
     if (!project) {
       renderNotFound();
+      return;
+    }
+
+    if (project.embed) {
+      renderLayout(
+        '<article class="detail-page page-enter embedded-project-page detail-color--' + project.color + '">' +
+          '<a class="text-link" href="' + (fromArchive ? '#/archive' : '#/projects') + '"><span aria-hidden="true">←</span> Back to collection</a>' +
+          '<section class="embedded-project-frame-wrap" aria-label="' + project.title + ' embedded project page">' +
+            '<iframe class="embedded-project-frame" src="' + project.embed + '" title="' + project.title + '"></iframe>' +
+          '</section>' +
+        '</article>',
+        fromArchive ? "archive" : "projects"
+      );
+      resizeEmbeddedFrames();
       return;
     }
 
@@ -161,6 +179,42 @@
       "projects"
     );
   }
+
+  function resizeEmbeddedFrames() {
+    app.querySelectorAll(".embedded-project-frame").forEach(function (frame) {
+      activeEmbeddedFrame = frame;
+      function setFrameHeight() {
+        try {
+          var frameDocument = frame.contentDocument || frame.contentWindow.document;
+          var height = Math.max(
+            frameDocument.body.scrollHeight,
+            frameDocument.documentElement.scrollHeight
+          );
+          frame.style.height = height + "px";
+        } catch (error) {
+          // Local file frames report their height through postMessage.
+        }
+      }
+
+      frame.addEventListener("load", function () {
+        setFrameHeight();
+        window.setTimeout(setFrameHeight, 300);
+        window.setTimeout(setFrameHeight, 1200);
+        try {
+          var frameDocument = frame.contentDocument || frame.contentWindow.document;
+          var observer = new ResizeObserver(setFrameHeight);
+          observer.observe(frameDocument.body);
+        } catch (error) {}
+      });
+    });
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data || event.data.type !== "candy-embedded-height") return;
+    if (!activeEmbeddedFrame) return;
+    if (event.source !== activeEmbeddedFrame.contentWindow) return;
+    if (Number.isFinite(event.data.height) && event.data.height > 0) activeEmbeddedFrame.style.height = Math.ceil(event.data.height) + "px";
+  });
 
   function renderAbout() {
     var notes = [
@@ -200,7 +254,11 @@
 
     if (entries.length) {
       return '<div class="memory-field">' + entries.map(function (entry) {
-        return '<article class="memory-object">' + entry.title + '</article>';
+        return '<a class="memory-object" data-project-open href="#/archive/' + entry.id + '">' +
+          '<div class="memory-preview color--' + entry.color + '">' +
+          (entry.thumbnail ? '<img src="' + entry.thumbnail + '" alt="' + entry.title + '" loading="lazy">' : '<strong>' + entry.title + '</strong>') + '</div>' +
+          '<div class="memory-caption"><span>' + entry.number + ' / ' + entry.status + '</span>' +
+          '<h2>' + entry.title + '</h2><span class="memory-arrow" aria-hidden="true">&#8599;</span></div></a>';
       }).join("") + '</div>';
     }
 
@@ -215,18 +273,18 @@
   }
 
   function renderArchive() {
-    var filters = '<button data-category="all" class="' + (activeArchiveCategory === "all" ? "is-active" : "") + '">All memories</button>' +
+    var filters = '<button data-category="all" aria-pressed="' + (activeArchiveCategory === "all") + '" class="' + (activeArchiveCategory === "all" ? "is-active" : "") + '">All projects</button>' +
       content.archiveCategories.map(function (category) {
-        return '<button data-category="' + category.id + '" class="' +
+        return '<button data-category="' + category.id + '" aria-pressed="' + (activeArchiveCategory === category.id) + '" class="' +
           (activeArchiveCategory === category.id ? "is-active" : "") + '">' + category.label + '</button>';
       }).join("");
 
     renderLayout(
       '<section class="archive-page page-enter">' +
         '<header class="archive-intro">' +
-          '<div><p class="eyebrow">Visual archive · memory space</p>' +
-          '<h1>Not everything needs to become a finished project.</h1></div>' +
-          '<p>Experiments, fragments, unfinished ideas and future concepts can remain here as visual memory.</p>' +
+          '<div><p class="eyebrow">CANDY COINS / Archive</p>' +
+          '<h1>All projects.</h1></div>' +
+          '<p>' + content.archiveEntries.length + ' collected projects</p>' +
         '</header>' +
         '<div class="archive-filter" role="group" aria-label="Filter archive">' + filters + '</div>' +
         '<div class="archive-field-host">' + archiveFieldHtml() + '</div>' +
@@ -291,6 +349,8 @@
       renderAbout();
     } else if (path === "/archive") {
       renderArchive();
+    } else if (path.indexOf("/archive/") === 0) {
+      renderProjectDetail(path.split("/")[2], true);
     } else if (path === "/contact") {
       renderContact();
     } else {
@@ -298,6 +358,15 @@
     }
   }
 
+  app.addEventListener("click", function (event) {
+    var link = event.target.closest("[data-project-open]");
+    if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button !== 0) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || event.detail === 0) return;
+    event.preventDefault();
+    if (link.classList.contains("is-opening")) return;
+    link.classList.add("is-opening");
+    window.setTimeout(function () { window.location.hash = link.getAttribute("href"); }, 220);
+  });
   window.addEventListener("hashchange", route);
   route();
 }());

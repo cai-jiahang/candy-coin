@@ -162,7 +162,7 @@
     .accent-blue { color: var(--blue); }
 
     .hero {
-      min-height: 100dvh;
+      min-height: calc(100 * var(--candy-vh, 1vh));
       padding: calc(var(--nav-height) + 44px) 0 48px;
       display: grid;
       align-items: center;
@@ -367,7 +367,7 @@
     .system__grid .art-button img { box-shadow: none; }
 
     .final {
-      min-height: 100dvh;
+      min-height: calc(100 * var(--candy-vh, 1vh));
       padding: clamp(100px, 12vw, 180px) 0 70px;
       display: grid;
       align-items: center;
@@ -431,7 +431,7 @@
     .lightbox.is-open { display: grid; }
     .lightbox__image {
       max-width: min(94vw, 1700px);
-      max-height: 88dvh;
+      max-height: calc(88 * var(--candy-vh, 1vh));
       width: auto;
       height: auto;
       object-fit: contain;
@@ -500,7 +500,7 @@
       .loader { display: none; }
     }
   </style>
-</head>
+<style>html.candy-embedded,html.candy-embedded body{min-height:0;height:auto}</style></head>
 <body>
   <div class="loader" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
   <div class="progress" aria-hidden="true"><div class="progress__fill"></div></div>
@@ -750,5 +750,5 @@
       });
     })();
   </script>
-</body>
+<script src="../embed-support.js"></script></body>
 </html>

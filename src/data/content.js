@@ -1,59 +1,20 @@
 const projects = [
-  {
-    id: "breeze",
-    number: "01",
-    title: "Breeze",
-    shape: "circle",
-    color: "blue",
-    status: "Content to be added",
-    year: "—",
-    note: "Project text, process notes and visual material will live here.",
-    media: [],
-  },
-  {
-    id: "dance-event",
-    number: "02",
-    title: "Dance Event",
-    shape: "oval",
-    color: "pink",
-    status: "Content to be added",
-    year: "—",
-    note: "Project text, process notes and visual material will live here.",
-    media: [],
-  },
-  {
-    id: "birthday-offline-event",
-    number: "03",
-    title: "Birthday Offline Event",
-    shape: "pill",
-    color: "yellow",
-    status: "Content to be added",
-    year: "—",
-    note: "Project text, process notes and visual material will live here.",
-    media: [],
-  },
-  {
-    id: "future-collection",
-    number: "04",
-    title: "Future Collection",
-    shape: "frame",
-    color: "white",
-    status: "Future concept",
-    year: "—",
-    note: "Future material can be collected here without inventing a finished outcome.",
-    media: [],
-  },
+  { id: "breeze", number: "01", title: "Breeze", shape: "circle", color: "blue", status: "Fashion design", embed: "breeze/index.html", category: "fashion", media: [] },
+  { id: "dance-event", number: "02", title: "Candy Random Dance", shape: "oval", color: "pink", status: "Offline event", embed: "random-dance/index.html", category: "events", media: [] },
+  { id: "birthday-offline-event", number: "03", title: "ASAHI Birthday Offline", shape: "pill", color: "yellow", status: "Offline event", embed: "asahi-birthday-offline/index.html", category: "events", media: [] },
+  { id: "mama", number: "04", title: "MAMA Color Lab", shape: "frame", color: "white", status: "Competition project", embed: "mama-color-lab/index.html", category: "visual", thumbnail: "mama-color-lab/assets/images/hero.webp", media: [] },
+  { id: "blossom-midnight", number: "05", title: "Blossom in Midnight", color: "pink", status: "Fashion design", embed: "blossom-midnight/index.html", category: "fashion", media: [] },
+  { id: "menswear-planning", number: "06", title: "Menswear Planning", color: "blue", status: "Fashion planning", embed: "menswear-planning/index.html", category: "fashion", thumbnail: "menswear-planning/assets/slides/slide-3.png", media: [] },
+  { id: "task3", number: "07", title: "TASK3", color: "yellow", status: "Fashion design", embed: "task3/index.html", category: "fashion", thumbnail: "task3/assets/brand/hero-final.jpg", media: [] }
 ];
-
+projects[0].thumbnail = "breeze/assets/hero.webp";
+projects[1].thumbnail = "random-dance/assets/hero-poster.jpg";
+projects[2].thumbnail = "asahi-birthday-offline/public/birthday-assets/hero-asahi.jpg";
+projects[4].thumbnail = "blossom-midnight/assets/model-day-with-logo.png";
 const archiveCategories = [
-  { id: "experiments", label: "Experiments", color: "blue" },
-  { id: "unfinished", label: "Unfinished Ideas", color: "pink" },
-  { id: "ai", label: "AI Experiments", color: "yellow" },
-  { id: "research", label: "Visual Research", color: "white" },
-  { id: "future", label: "Future Concepts", color: "blue" },
+  { id: "fashion", label: "Fashion", color: "blue" },
+  { id: "events", label: "Offline Events", color: "pink" },
+  { id: "visual", label: "Visual Design", color: "yellow" }
 ];
-
-// Add real archive entries here later. Empty media is rendered as an intentional placeholder.
-const archiveEntries = [];
-
-window.CANDY_CONTENT = { projects, archiveCategories, archiveEntries };
+const archiveEntries = projects;
+window.CANDY_CONTENT = { projects, featuredIds: ["breeze", "dance-event", "birthday-offline-event", "mama"], archiveCategories, archiveEntries };

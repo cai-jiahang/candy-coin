@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ASAHI Birthday Offline Event | CANDY COINS Case</title>
+    <meta
+      name="description"
+      content="一个偶像生日线下应援活动视觉系统案例页，展示海报、易拉宝、背景板和现场物料。"
+    />
+    <script>
+      if (window.self !== window.top) {
+        document.documentElement.classList.add("is-candy-embedded");
+      }
+    </script>
+    <link rel="stylesheet" href="./case.css" />
+    <style>
+      html.is-candy-embedded,
+      html.is-candy-embedded body {
+        min-height: 0;
+        background: transparent;
+      }
+
+      html.is-candy-embedded main {
+        overflow: visible;
+      }
+
+      html.is-candy-embedded .hero-section {
+        min-height: auto;
+      }
+
+      html.is-candy-embedded .reflection-section {
+        padding-bottom: clamp(4rem, 8vw, 7rem);
+      }
+
+      .system-layout {
+        grid-template-columns: minmax(14rem, 0.42fr) minmax(0, 1fr);
+        align-items: center;
+      }
+
+      .rollup-card {
+        width: min(22rem, 42vw);
+        justify-self: start;
+      }
+
+      .rollup-card img,
+      .site-proof img,
+      .reflection-image img {
+        height: auto;
+        max-height: none;
+        object-fit: contain;
+        background: #fffaf0;
+      }
+
+      .rollup-card img {
+        max-height: min(78vh, 44rem);
+      }
+
+      @media (max-width: 760px) {
+        .system-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .rollup-card {
+          width: min(22rem, 100%);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      (function () {
+        if (window.self === window.top) return;
+
+        function sendHeight() {
+          var height = Math.max(
+            document.body.scrollHeight,
+            document.documentElement.scrollHeight
+          );
+          window.parent.postMessage({ type: "candy-embedded-height", height: height }, "*");
+        }
+
+        window.addEventListener("load", sendHeight);
+        window.addEventListener("resize", sendHeight);
+        window.setTimeout(sendHeight, 300);
+        window.setTimeout(sendHeight, 1200);
+
+        if ("ResizeObserver" in window) {
+          new ResizeObserver(sendHeight).observe(document.body);
+        }
+      })();
+    </script>
+    <main>
+      <section class="hero-section" aria-labelledby="project-title">
+        <nav class="topbar" aria-label="Project navigation">
+          <a href="#overview">Overview</a>
+          <a href="#system">System</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#reflection">Reflection</a>
+        </nav>
+
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="kicker">CANDY COINS offline visual case</p>
+            <h1 id="project-title">ASAHI Birthday Offline Event</h1>
+            <p class="hero-lede">
+              Idol birthday support visuals for an offline fan gathering.
+            </p>
+            <div class="hero-actions" aria-label="Project summary links">
+              <a href="#gallery" class="button-primary">View materials</a>
+              <a href="#reflection" class="button-secondary">Read case notes</a>
+            </div>
+          </div>
+
+          <figure class="hero-art">
+            <img
+              src="./public/birthday-assets/hero-asahi.jpg"
+              alt="ASAHI birthday offline event main visual"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section class="overview-section" id="overview" aria-labelledby="overview-title">
+        <div class="section-heading">
+          <p class="kicker">Project read</p>
+          <h2 id="overview-title">From fan emotion to site-specific graphics</h2>
+          <p>
+            Birthday support, stage imagery and Y2K collage turned into posters,
+            roll-up banners and photo-area graphics.
+          </p>
+        </div>
+
+        <div class="stat-grid" aria-label="Project facts">
+          <div class="stat-tile"><span>Format</span><strong>Poster, roll-up, backdrop</strong></div>
+          <div class="stat-tile"><span>Culture</span><strong>Idol birthday support</strong></div>
+          <div class="stat-tile"><span>Visual code</span><strong>Y2K, stage, collage</strong></div>
+          <div class="stat-tile"><span>Role</span><strong>Visual concept and layout</strong></div>
+        </div>
+      </section>
+
+      <section class="marquee-band" aria-label="Visual keywords">
+        <span>0820</span>
+        <span>HBD</span>
+        <span>ASAHI</span>
+        <span>Y2K</span>
+        <span>Offline support</span>
+        <span>Stage culture</span>
+      </section>
+
+      <section class="system-section" id="system" aria-labelledby="system-title">
+        <div class="section-heading compact">
+          <p class="kicker">Visual system</p>
+          <h2 id="system-title">A birthday event built for posters, space and photos</h2>
+        </div>
+
+        <div class="system-layout">
+          <figure class="rollup-card">
+            <img
+              src="./public/birthday-assets/rollup.jpg"
+              alt="ASAHI birthday roll-up banner design"
+            />
+          </figure>
+
+          <div class="system-notes">
+            <article class="note">
+              <h3>Event Invitation</h3>
+              <p>
+                The main visuals work like invitations, not just birthday cards.
+              </p>
+            </article>
+            <article class="note">
+              <h3>Photo Spot Logic</h3>
+              <p>
+                Wide formats support check-ins, group photos and venue display.
+              </p>
+            </article>
+            <article class="note">
+              <h3>Personal Brand Trace</h3>
+              <p>
+                Pixel type, orange accents and sticker stars echo CANDY COINS.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery-section" id="gallery" aria-labelledby="gallery-title">
+        <div class="section-heading">
+          <p class="kicker">Selected materials</p>
+          <h2 id="gallery-title">Portfolio-ready assets from the project folder</h2>
+          <p>
+            Full exported graphics, kept closer to their original proportions.
+          </p>
+        </div>
+
+        <div class="showcase-stack">
+          <figure class="showcase-item">
+            <img src="./public/birthday-assets/hero-asahi.jpg" alt="ASAHI horizontal birthday key visual" />
+            <figcaption>Main backdrop visual</figcaption>
+          </figure>
+          <figure class="showcase-item">
+            <img src="./public/birthday-assets/wide-collage.jpg" alt="Wide orange birthday graphic with portrait cutouts" />
+            <figcaption>Photo-wall graphic</figcaption>
+          </figure>
+        </div>
+
+        <div class="gallery-grid">
+          <figure class="gallery-item tall">
+            <img src="./public/birthday-assets/poster.jpg" alt="Vertical ASAHI birthday poster" />
+            <figcaption>Vertical invitation poster</figcaption>
+          </figure>
+          <figure class="gallery-item tall">
+            <img src="./public/birthday-assets/rollup.jpg" alt="ASAHI birthday roll-up banner design" />
+            <figcaption>Roll-up banner</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <img src="./public/birthday-assets/collage.jpg" alt="ASAHI collage poster thank you design" />
+            <figcaption>Collage poster study</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <img src="./public/birthday-assets/scene-type.jpg" alt="Minimal birthday typography image" />
+            <figcaption>First-year web post graphic</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <img src="./public/birthday-assets/field-01.jpg" alt="Square field photo from birthday offline activity" />
+            <figcaption>Field documentation</figcaption>
+          </figure>
+        </div>
+
+        <div class="proof-layout" aria-label="Published and on-site records">
+          <figure class="phone-proof">
+            <img
+              src="./public/birthday-assets/social-weibo.jpg"
+              alt="Weibo sharing screenshot showing the birthday visual grid"
+            />
+            <figcaption>Published social post</figcaption>
+          </figure>
+          <figure class="site-proof">
+            <img
+              src="./public/birthday-assets/onsite-installation.jpg"
+              alt="On-site birthday event installation with printed ASAHI backdrop and balloons"
+            />
+            <figcaption>On-site installation</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="role-section" aria-labelledby="role-title">
+        <div>
+          <p class="kicker">Likely contribution</p>
+          <h2 id="role-title">Design responsibilities to confirm and present</h2>
+        </div>
+        <ul class="role-list">
+          <li>Visual concept for an idol birthday offline event</li>
+          <li>Poster and roll-up composition</li>
+          <li>Backdrop and photo area visual planning</li>
+          <li>Y2K graphic language, typography and image collage</li>
+        </ul>
+      </section>
+
+      <section class="reflection-section" id="reflection" aria-labelledby="reflection-title">
+        <div class="reflection-copy">
+          <p class="kicker">Case angle</p>
+          <h2 id="reflection-title">A move from coursework visuals into real event design</h2>
+          <p>
+            The project shows a shift from making a single graphic to designing
+            for a fan community, a room and a photo moment.
+          </p>
+        </div>
+        <figure class="reflection-image">
+          <img
+            src="./public/birthday-assets/field-02.jpg"
+            alt="Square documentation image from the birthday offline project"
+          />
+        </figure>
+      </section>
+    </main>
+  </body>
+</html>

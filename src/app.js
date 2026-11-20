@@ -150,7 +150,8 @@
         '<article class="detail-page page-enter embedded-project-page detail-color--' + project.color + '">' +
           '<a class="text-link" href="' + (fromArchive ? '#/archive' : '#/projects') + '"><span aria-hidden="true">←</span> Back to collection</a>' +
           '<section class="embedded-project-frame-wrap" aria-label="' + project.title + ' embedded project page">' +
-            '<iframe class="embedded-project-frame" src="' + project.embed + '" title="' + project.title + '"></iframe>' +
+            '<iframe class="embedded-project-frame" src="' + project.embed + '" title="' + project.title + '"' +
+              (project.id === "task3" ? ' allowfullscreen' : '') + '></iframe>' +
           '</section>' +
         '</article>',
         fromArchive ? "archive" : "projects"

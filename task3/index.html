@@ -9,7 +9,7 @@
     />
     <link rel="icon" href="data:," />
     <title>TASK³ | REBUILD THE EVERYDAY</title>
-    <link rel="stylesheet" href="styles.css?v=10" />
+    <link rel="stylesheet" href="styles.css?v=11" />
   <style>html.candy-embedded,html.candy-embedded body{min-height:0;height:auto}</style><style data-responsive-images>img{height:auto}</style></head>
   <body>
     <a class="skip-link" href="#main">跳到正文</a>
@@ -135,42 +135,17 @@
           </p>
         </div>
 
-        <div class="book-tool" data-book-tool>
-          <div class="book-stage-row">
-            <button class="book-arrow" type="button" data-book-prev aria-label="上一页">‹</button>
-            <div class="book-stage" data-book-stage tabindex="0" aria-label="TASK³ 画册翻页器">
-              <div class="book-spread book-spread-under" aria-hidden="true">
-                <img data-book-under-left src="assets/book-final/spread-01-left.jpg.w1600.webp" alt="" hidden width="1006" height="1375" decoding="async" srcset="assets/book-final/spread-01-left.jpg.w768.webp 768w, assets/book-final/spread-01-left.jpg.w1600.webp 1006w" sizes="(max-width: 600px) 100vw, 1200px">
-                <img data-book-under-right src="assets/book-final/spread-01-right.jpg.w1600.webp" alt="" width="1007" height="1375" decoding="async" srcset="assets/book-final/spread-01-right.jpg.w768.webp 768w, assets/book-final/spread-01-right.jpg.w1600.webp 1007w" sizes="(max-width: 600px) 100vw, 1200px">
-              </div>
-              <div class="book-spread book-spread-current">
-                <img data-book-left src="assets/book-final/spread-01-left.jpg.w1600.webp" alt="TASK³ 视觉画册第 1 个跨页左页" hidden width="1006" height="1375" decoding="async" srcset="assets/book-final/spread-01-left.jpg.w768.webp 768w, assets/book-final/spread-01-left.jpg.w1600.webp 1006w" sizes="(max-width: 600px) 100vw, 1200px">
-                <img data-book-right src="assets/book-final/spread-01-right.jpg.w1600.webp" alt="TASK³ 视觉画册第 1 个跨页右页" width="1007" height="1375" decoding="async" srcset="assets/book-final/spread-01-right.jpg.w768.webp 768w, assets/book-final/spread-01-right.jpg.w1600.webp 1007w" sizes="(max-width: 600px) 100vw, 1200px">
-              </div>
-              <div class="book-spine" aria-hidden="true"></div>
-            </div>
-            <button class="book-arrow" type="button" data-book-next aria-label="下一页">›</button>
+        <div class="book-reader section-shell">
+          <div class="book-reader-actions">
+            <a href="rebuild-the-everyday.html" target="_blank" rel="noopener">在新标签页打开电子书 <span aria-hidden="true">&#8599;</span></a>
           </div>
-
-          <div class="book-controls">
-            <div class="book-mode" role="group" aria-label="画册阅读模式">
-              <button type="button" data-book-mode="spread" aria-pressed="true">双页</button>
-              <button type="button" data-book-mode="single" aria-pressed="false">单页</button>
-            </div>
-            <p class="book-count" aria-live="polite">
-              <span data-book-current>01</span><span>/</span><span data-book-total>21</span>
-            </p>
-            <input
-              data-book-range
-              type="range"
-              min="1"
-              max="21"
-              value="1"
-              aria-label="画册页码"
-            />
-            <button class="book-fullscreen" type="button" data-book-fullscreen>全屏查看</button>
-          </div>
-          <p class="book-source">Final visual book · 21 spreads · Mobile single-page reading</p>
+          <iframe
+            class="book-reader-frame"
+            src="rebuild-the-everyday.html"
+            title="重塑日常 · 互动电子书"
+            loading="lazy"
+            allowfullscreen
+          ></iframe>
         </div>
       </section>
 
@@ -289,6 +264,6 @@
       <p></p>
     </dialog>
 
-    <script src="script.js?v=8"></script>
+    <script src="script.js?v=9"></script>
   <script src="../embed-support.js?v=2.0.1"></script></body>
 </html>

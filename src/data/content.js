@@ -17,5 +17,5 @@ const archiveCategories = [
   { id: "visual", label: "Visual Design", color: "yellow" }
 ];
 const archiveEntries = projects;
-projects.forEach(function (project) { project.embed += project.id === "task3" ? "?v=2.0.2" : "?v=2.0.1"; });
+projects.forEach(function (project) { project.embed += project.id === "task3" ? "?v=2.0.3" : "?v=2.0.1"; });
 window.CANDY_CONTENT = { projects, featuredIds: ["breeze", "dance-event", "birthday-offline-event", "mama"], archiveCategories, archiveEntries };

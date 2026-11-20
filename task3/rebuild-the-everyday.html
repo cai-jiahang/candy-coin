@@ -4,30 +4,17 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#dedbd3"><title>重塑日常 · 翻阅</title>
 <style>:root{font-family:Arial,"Microsoft YaHei",sans-serif;color:#4a453e;background:#dedbd3;color-scheme:light}*{box-sizing:border-box}body{margin:0;overflow:hidden}#reader{height:100dvh;width:100%;position:relative;overflow:hidden;background:#dedbd3}#viewport{position:absolute;inset:0;touch-action:none;cursor:grab}#viewport:active{cursor:grabbing}canvas{display:block;width:100%;height:100%;outline:0}button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;-webkit-tap-highlight-color:transparent}button:focus-visible{outline:1px solid #8f2925;outline-offset:4px}button:disabled{pointer-events:none}svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round}#loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:12px;letter-spacing:2px;margin:0;padding:14px 20px;background:#dedbd3}#loading[hidden]{display:none}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.edge{position:absolute;top:30%;height:40%;width:5%;max-width:70px;opacity:0}.edge.left{left:0}.edge.right{right:0}#controls{position:absolute;bottom:max(24px,env(safe-area-inset-bottom));right:28px;display:flex;align-items:center;gap:14px;opacity:0;transition:opacity .28s;z-index:5}#controls.visible,#controls:focus-within,#controls:hover{opacity:1}#controls>button{opacity:.48}#controls button{width:38px;height:38px;display:grid;place-items:center;border-radius:50%;transition:background .15s,transform .15s}#controls button:hover{background:#c8c2b655;opacity:1}#controls button:active{transform:scale(.94)}#tools{display:flex;gap:7px;align-items:center;background:#e9e5ddde;backdrop-filter:blur(10px);border:1px solid #3a302513;border-radius:30px;padding:4px 7px}#tools[hidden]{display:none}dialog{border:1px solid #9c948633;background:#ebe7df;color:#4a453e;padding:44px 25px 25px;width:min(1040px,94vw);max-height:90dvh;box-shadow:0 20px 100px #0003}dialog::backdrop{background:#24211be0;backdrop-filter:blur(10px)}.close{position:fixed;right:max(4vw,calc((100vw - 1040px)/2 + 14px));top:6vh;width:36px;height:36px;font-size:29px;z-index:5;background:#ebe7dfd9;border-radius:50%}#thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 18px}.thumb{padding:0;text-align:left;font-size:10px;line-height:1.7}.thumb .preview{height:132px;display:flex;align-items:center;justify-content:center;padding:5px;border:1px solid transparent}.thumb img{max-width:100%;max-height:100%;box-shadow:0 4px 8px #0002}.thumb.active .preview{border-color:#922c28}.thumb span{display:block;margin-top:8px}.thumb:hover{color:#922c28}#enlargement{width:96vw;max-width:1600px;padding:30px 18px 18px;overflow:auto}#large-pages{display:flex;align-items:flex-start;justify-content:center;width:100%}#large-pages img{display:block;width:50%;height:auto;flex-shrink:0;cursor:zoom-in}#large-pages img:only-child{width:min(100%,750px)}#large-pages.detail{width:180%}#large-pages.detail img{cursor:zoom-out}#large-pages.detail img:only-child{width:65%}@media(max-width:650px){#controls{bottom:18px;right:15px}#thumbs{grid-template-columns:repeat(2,1fr)}.thumb .preview{height:115px}.close{right:5vw}#large-pages{flex-direction:column}#large-pages img,#large-pages img:only-child{width:100%}#large-pages.detail{width:200%}#large-pages.detail img:only-child{width:100%}.edge{width:7%}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
-#viewport{touch-action:pan-y}
-#flat-book{position:absolute;inset:0;display:grid;place-items:center;touch-action:pan-y}
-#flat-book[hidden],#viewport[hidden]{display:none}
-#flat-pages{display:flex;justify-content:center;align-items:center;width:min(88vw,103dvh)}
-#flat-pages img{display:block;width:50%;aspect-ratio:3/4.1;object-fit:contain;box-shadow:0 6px 18px #231b1930}
-#flat-pages img[hidden]{display:none}
-#prev,#next{opacity:.58}
-#prev:hover,#next:hover,#prev:focus-visible,#next:focus-visible{opacity:1}
-#prev:disabled,#next:disabled{opacity:0}
 </style>
 
+<link rel="preload" as="image" href="book/pdf-01-r.jpg" fetchpriority="high">
 </head>
 <body>
 <main id="reader" aria-label="重塑日常，可拖动书页或使用左右方向键翻阅">
-  <div id="flat-book" aria-label="电子书">
-    <div id="flat-pages">
-      <img id="flat-left" hidden alt="">
-      <img id="flat-right" src="book/cover-preview.jpg" fetchpriority="high" decoding="async" alt="重塑日常封面">
-    </div>
-  </div>
-  <div id="viewport" aria-label="翻页书本" hidden></div>
+  <div id="viewport" aria-label="翻页书本"></div>
+  <p id="loading" role="status">正在展开…</p>
   <span id="status" class="sr-only" aria-live="polite">封面</span>
-  <button id="prev" class="edge left" aria-label="上一页" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
-  <button id="next" class="edge right" aria-label="下一页"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+  <button id="prev" class="edge left" aria-label="上一页"></button>
+  <button id="next" class="edge right" aria-label="下一页"></button>
   <div id="controls">
     <div id="tools" hidden>
       <button id="home" aria-label="回到封面" title="回到封面"><svg viewBox="0 0 24 24"><path d="M5 4v16M19 5 8 12l11 7z"/></svg></button>
@@ -40,6 +27,7 @@
 </main>
 <dialog id="directory" aria-label="目录"><button class="close" data-close aria-label="关闭目录">×</button><div id="thumbs"></div></dialog>
 <dialog id="enlargement" aria-label="放大阅读"><button class="close" data-close aria-label="关闭放大阅读">×</button><div id="large-pages"></div></dialog>
+<script src="book/three.min.js"></script>
 <script>
 window.BOOK = {
   "pages": [
@@ -83,7 +71,6 @@ window.BOOK = {
     "book/pdf-20-l.jpg",
     "book/pdf-20-r.jpg",
     "book/pdf-21-l.jpg",
-    "book/blank.jpg",
     "book/pdf-21-r.jpg"
   ],
   "entries": [
@@ -193,13 +180,192 @@ window.BOOK = {
       "thumb": "book/pdf-21-l.jpg"
     },
     {
-      "page": 41,
+      "page": 40,
       "label": "封底",
       "thumb": "book/pdf-21-r.jpg"
     }
   ]
 };
 </script>
-<script defer src="book/reader.js?v=1"></script>
-</body>
+<script>/* Three.js — MIT. Original page artwork belongs to its author. */
+(() => {
+  'use strict';
+  const $=id=>document.getElementById(id), T=window.THREE;
+  if(!T){$('loading').textContent='渲染组件未能加载，请重新打开文件。';return;}
+  const W=3,H=4.1,NX=72,NY=12;
+  const urls=window.BOOK.pages, entries=window.BOOK.entries;
+  const LAST=urls.length-1, LEAVES=LAST/2;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let renderer;
+  try{renderer=new T.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});}catch(e){$('loading').textContent='请用支持 WebGL 的 Edge 或 Chrome 打开此文件。';return;}
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setClearColor(0xdedbd3);
+  renderer.outputColorSpace=T.SRGBColorSpace;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFShadowMap;
+  renderer.domElement.style.visibility='hidden';
+  $('viewport').append(renderer.domElement);
+  const scene=new T.Scene(),root=new T.Group();scene.add(root);
+  // Local studio reflection: a long softbox reflected in the coated paper.
+  const glossStudio=new T.Scene();glossStudio.background=new T.Color(0x101010);
+  function softbox(w,h,x,y,z,strength){const m=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({color:new T.Color().setRGB(strength,strength,strength),side:T.DoubleSide}));m.position.set(x,y,z);m.lookAt(0,0,0);glossStudio.add(m);}
+  softbox(.55,6,-1.4,3.2,8,3.0);softbox(.4,6,5,-1,7,2.0);
+  const pmrem=new T.PMREMGenerator(renderer);const studioMap=pmrem.fromScene(glossStudio,.035,.1,60);pmrem.dispose();
+
+  const camera=new T.OrthographicCamera(-4,4,3,-3,.1,80);
+  camera.position.set(.18,-5.7,19);camera.lookAt(0,0,.08);
+  const ambient=new T.HemisphereLight(0xffffff,0xc5bfae,1.75);scene.add(ambient);
+  const light=new T.DirectionalLight(0xfffcf7,1.65);light.position.set(-3.5,6,12);light.castShadow=true;
+  light.shadow.mapSize.set(2048,2048);Object.assign(light.shadow.camera,{left:-7,right:7,top:8,bottom:-8,near:1,far:30});light.shadow.bias=-.00025;light.shadow.normalBias=.015;light.shadow.radius=5;scene.add(light);
+  const fill=new T.DirectionalLight(0xffffff,.35);fill.position.set(5,-2,7);scene.add(fill);
+  const ground=new T.Mesh(new T.PlaneGeometry(200,200),new T.MeshBasicMaterial({color:0xdedbd3}));ground.position.z=-.015;scene.add(ground);
+  const groundShadow=new T.Mesh(new T.PlaneGeometry(200,200),new T.ShadowMaterial({color:0x3a3025,opacity:.18}));groundShadow.position.z=-.014;groundShadow.receiveShadow=true;scene.add(groundShadow);
+  // Smooth contact shadow; no grain or paper-noise overlay over the artwork.
+  const shadowCanvas=document.createElement('canvas');shadowCanvas.width=256;shadowCanvas.height=256;
+  const sc=shadowCanvas.getContext('2d'),grad=sc.createRadialGradient(128,128,25,128,128,126);grad.addColorStop(0,'rgba(38,28,17,.35)');grad.addColorStop(.6,'rgba(38,28,17,.15)');grad.addColorStop(1,'rgba(38,28,17,0)');sc.fillStyle=grad;sc.fillRect(0,0,256,256);
+  const contact=new T.Mesh(new T.PlaneGeometry(8.1,6),new T.MeshBasicMaterial({map:new T.CanvasTexture(shadowCanvas),transparent:true,depthWrite:false}));contact.position.set(0,-.12,-.013);root.add(contact);
+  const plainPaper=new T.MeshPhysicalMaterial({color:0xf5efdf,roughness:.26,clearcoat:.75,clearcoatRoughness:.16});
+  // Only the artwork-bearing sheets are rendered; no solid block underneath.
+  const textures=new Map(),pendingTextures=new Map(),imageLoader=new T.TextureLoader();
+  function texture(i){
+    i=Math.max(0,Math.min(LAST,i));
+    if(textures.has(i))return textures.get(i);
+    let finish;
+    pendingTextures.set(i,new Promise(resolve=>{finish=resolve;}));
+    const tx=imageLoader.load(urls[i],()=>{finish(true);invalidate();},undefined,()=>finish(false));
+    tx.colorSpace=T.SRGBColorSpace;
+    tx.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+    textures.set(i,tx);
+    return tx;
+  }
+  function spreadPages(s){return s===0?[0]:[s*2-1,s*2];}
+  function pagesReady(s){return spreadPages(s).map(texture).every(image=>image.image?.naturalWidth);}
+  let waitingForPages=false;
+  async function afterPagesLoad(s,action){
+    if(waitingForPages)return;
+    if(pagesReady(s)){action();return;}
+    waitingForPages=true;
+    $('loading').hidden=false;
+    $('loading').textContent='正在加载书页…';
+    const results=await Promise.all(spreadPages(s).map(i=>pendingTextures.get(i)));
+    waitingForPages=false;
+    if(results.every(Boolean)){
+      $('loading').hidden=true;
+      action();
+    }else{
+      $('loading').textContent='书页加载失败，请刷新后重试。';
+    }
+  }
+  const paperMaterials=new Map();
+  function paper(i){if(!paperMaterials.has(i)){const mat=new T.MeshPhysicalMaterial({map:texture(i),roughness:.22,metalness:0,ior:1.48,specularIntensity:.25,clearcoat:.9,clearcoatRoughness:.065,envMap:studioMap.texture,envMapIntensity:.45,side:T.FrontSide});mat.onBeforeCompile=shader=>{shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`#include <map_fragment>\nfloat bindingDistance = ${i%2?'1.0 - vMapUv.x':'vMapUv.x'};\ndiffuseColor.rgb *= 1.0 - 0.14 * exp(-bindingDistance * 22.0) - 0.13 * exp(-bindingDistance * 85.0);`);};mat.customProgramCacheKey=()=>String(i%2);paperMaterials.set(i,mat);}return paperMaterials.get(i);}
+  // A closed, double-sided sheet: front, back and a real paper-coloured edge.
+  function sheet(){const count=(NX+1)*(NY+1),positions=new Float32Array(count*2*3),uv=new Float32Array(count*2*2),ix=[];
+    for(let side=0;side<2;side++)for(let row=0;row<=NY;row++)for(let col=0;col<=NX;col++){const k=side*count+row*(NX+1)+col;uv[k*2]=side?1-col/NX:col/NX;uv[k*2+1]=row/NY;}
+    for(let row=0;row<NY;row++)for(let col=0;col<NX;col++){const a=row*(NX+1)+col,b=a+1,d=a+NX+1,c=d+1;ix.push(a,b,d,b,c,d);}
+    const frontCount=ix.length;
+    for(let k=0;k<frontCount;k+=3)ix.push(ix[k]+count,ix[k+2]+count,ix[k+1]+count);
+    const edgeStart=ix.length;
+    const edge=(a,b)=>ix.push(a,a+count,b,b,a+count,b+count);
+    for(let c=0;c<NX;c++){edge(c+1,c);edge(NY*(NX+1)+c,NY*(NX+1)+c+1);}
+    for(let r=0;r<NY;r++){edge(r*(NX+1),(r+1)*(NX+1));edge((r+1)*(NX+1)+NX,r*(NX+1)+NX);}
+    const geo=new T.BufferGeometry();geo.setAttribute('position',new T.BufferAttribute(positions,3).setUsage(T.DynamicDrawUsage));geo.setAttribute('uv',new T.BufferAttribute(uv,2));geo.setIndex(ix);geo.addGroup(0,frontCount,0);geo.addGroup(frontCount,frontCount,1);geo.addGroup(edgeStart,ix.length-edgeStart,2);
+    const mesh=new T.Mesh(geo,[plainPaper,plainPaper,plainPaper]);mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;root.add(mesh);return mesh;}
+  const left=sheet(),right=sheet(),turn=sheet();turn.visible=false;
+  let spread=0,progress=0,turning=null,animation=null,drag=null,raf=0,dirty=true,lastFrame=0;
+  function heights(s){const stack=s/(LEAVES+1);return{left:.06+.012*stack,right:.06+.012*(1-stack)};}
+  function deform(mesh,p,outerZ){const a=mesh.geometry.attributes.position,arr=a.array,count=(NX+1)*(NY+1),wave=Math.sin(p*Math.PI),bend=wave,t=.008;
+    for(let row=0;row<=NY;row++){const v=row/NY;let x=0,z=0;
+      for(let col=0;col<=NX;col++){const u=col/NX,angle=p*Math.PI+bend*(.52-u)+.095*wave*(v-.5);
+        if(col>0){const mid=p*Math.PI+bend*(.52-(u-.5/NX))+.095*wave*(v-.5);x+=W/NX*Math.cos(mid);z+=W/NX*Math.sin(mid);}
+        const base=.08+(outerZ-.08)*u+.012*Math.sin(Math.PI*u),y=(v-.5)*H;
+        for(let side=0;side<2;side++){const k=(side*count+row*(NX+1)+col)*3,offset=(side===0?1:-1)*t/2;arr[k]=x-Math.sin(angle)*offset;arr[k+1]=y+.018*wave*Math.sin(u*Math.PI)*(v-.5);arr[k+2]=base+z+Math.cos(angle)*offset;}
+      }
+    }a.needsUpdate=true;mesh.geometry.computeVertexNormals();}
+  function setMaps(mesh,front,back){mesh.material=[paper(front),paper(back),plainPaper];}
+  function positionBook(s){
+    const closed=Math.max(0,1-s);root.position.x=-W/2*closed;
+    contact.scale.x=1-.41*closed;contact.position.x=W/2*closed;
+    resizeProjection(s);
+  }
+  function layOut(){left.visible=spread>0;right.visible=true;const h=heights(spread);if(left.visible){setMaps(left,Math.max(0,spread*2-2),spread*2-1);deform(left,1,h.left);}setMaps(right,spread*2,Math.min(LAST,spread*2+1));deform(right,0,h.right);positionBook(spread);syncUI();invalidate();}
+  function start(dir){if(turning)return false;if((dir===1&&spread>=LEAVES)||(dir===-1&&spread<=0))return false;turning={dir,from:spread,to:spread+dir};progress=0;
+    const leaf=dir===1?spread:spread-1;setMaps(turn,leaf*2,leaf*2+1);turn.visible=true;
+    const target=heights(spread+dir);
+    if(dir===1){setMaps(right,(spread+1)*2,Math.min(LAST,(spread+1)*2+1));deform(right,0,target.right);}
+    else{left.visible=spread-1>0;if(left.visible){setMaps(left,Math.max(0,(spread-1)*2-2),(spread-1)*2-1);deform(left,1,target.left);}}
+    paintTurn();return true;}
+  function paintTurn(){if(!turning)return;const {dir,from,to}=turning;const p=dir===1?progress:1-progress,s=from+(to-from)*progress,h=heights(s);
+    const outerZ=h.right*(1-p)+h.left*p;deform(turn,p,outerZ+.008);positionBook(s);dirty=true;}
+  function complete(commit){const next=commit?turning.to:turning.from;spread=next;turn.visible=false;turning=null;animation=null;progress=0;layOut();warm();}
+  function settle(commit,duration){animation={from:progress,to:commit?1:0,start:performance.now(),duration:reduced?1:duration};invalidate();}
+  function flip(dir){if(animation||drag||spread+dir<0||spread+dir>LEAVES)return;afterPagesLoad(spread+dir,()=>{if(start(dir))settle(true,1400);});}
+  function go(s){if(turning)return;const next=Math.max(0,Math.min(LEAVES,s));afterPagesLoad(next,()=>{spread=next;layOut();warm();});}
+  function syncUI(){$('prev').disabled=spread===0;$('next').disabled=spread===LEAVES;$('status').textContent=spread===0?'封面':spread===LEAVES?`第 ${LAST} 页及封底，共 ${urls.length} 页`:`第 ${spread*2} 至 ${spread*2+1} 页，共 ${urls.length} 页`;
+    document.querySelectorAll('.thumb').forEach((b,i)=>b.classList.toggle('active',Math.ceil(entries[i].page/2)===spread));}
+  function warm(){for(let i=Math.max(0,spread*2-3);i<Math.min(urls.length,spread*2+6);i++)texture(i);}
+  function resizeProjection(s=spread){const aspect=innerWidth/innerHeight,closed=Math.max(0,1-s),worldWidth=7.2-closed*3.0;
+    const vh=Math.max(6.05,worldWidth/aspect);camera.left=-vh*aspect/2;camera.right=vh*aspect/2;camera.top=vh/2;camera.bottom=-vh/2;camera.updateProjectionMatrix();}
+  function resize(){renderer.setSize(innerWidth,innerHeight);resizeProjection(turning?turning.from+(turning.to-turning.from)*progress:spread);invalidate();}
+  function invalidate(){dirty=true;if(!raf)raf=requestAnimationFrame(frame);}
+  function frame(now){raf=0;const dt=Math.min(40,now-lastFrame||16);lastFrame=now;
+    if(animation){const t=Math.min(1,(now-animation.start)/animation.duration),ease=t*t*t*(t*(6*t-15)+10);progress=animation.from+(animation.to-animation.from)*ease;paintTurn();if(t>=1){const commit=animation.to===1;complete(commit);}}
+    else if(drag&&turning){progress+=(drag.target-progress)*(1-Math.exp(-dt/48));paintTurn();}
+    if(dirty){renderer.render(scene,camera);dirty=false;}
+    if(animation||drag)raf=requestAnimationFrame(frame);
+  }
+  // Drag anywhere on a leaf: broad curvature instead of a sharp folded corner.
+  const canvas=renderer.domElement,ray=new T.Raycaster(),pointer=new T.Vector2();
+  function hit(e){pointer.set(e.clientX/innerWidth*2-1,-e.clientY/innerHeight*2+1);ray.setFromCamera(pointer,camera);return ray.intersectObjects([left,right].filter(m=>m.visible),false)[0];}
+  canvas.addEventListener('pointerdown',e=>{if(e.button!==0||animation||drag||waitingForPages||document.querySelector('dialog[open]'))return;const found=hit(e);if(!found)return;const dir=found.object===right?1:-1;if(spread+dir<0||spread+dir>LEAVES)return;if(!pagesReady(spread+dir)){flip(dir);return;}if(!start(dir))return;canvas.setPointerCapture(e.pointerId);drag={id:e.pointerId,x:e.clientX,lastX:e.clientX,lastTime:e.timeStamp,velocity:0,target:0,moved:false,dir};invalidate();});
+  canvas.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==drag.id)return;const dx=(drag.x-e.clientX)*drag.dir,pxPerPage=(W/(camera.right-camera.left))*innerWidth;
+    drag.target=Math.max(0,Math.min(1,dx/(pxPerPage*1.62)));drag.velocity=(drag.lastX-e.clientX)*drag.dir/Math.max(1,e.timeStamp-drag.lastTime);drag.lastX=e.clientX;drag.lastTime=e.timeStamp;drag.moved=drag.moved||Math.abs(dx)>5;invalidate();});
+  function release(e,cancel=false){if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=null;if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);const commit=!cancel&&(!d.moved||d.target>.34||(d.velocity>.6&&d.target>.1));settle(commit,d.moved?Math.max(580,1150*Math.abs((commit?1:0)-progress)):1400);}
+  canvas.addEventListener('pointerup',e=>release(e));canvas.addEventListener('pointercancel',e=>release(e,true));
+  canvas.addEventListener('dblclick',()=>{if(!turning)openZoom();});
+  $('prev').onclick=()=>flip(-1);$('next').onclick=()=>flip(1);
+  document.addEventListener('keydown',e=>{if(document.querySelector('dialog[open]'))return;if(e.key==='ArrowRight'){e.preventDefault();flip(1);}if(e.key==='ArrowLeft'){e.preventDefault();flip(-1);}if(e.key==='Home'){e.preventDefault();go(0);}if(e.key==='End'){e.preventDefault();go(LEAVES);}});
+  let toolTimeout;
+  function reveal(){const c=$('controls');c.classList.add('visible');clearTimeout(toolTimeout);toolTimeout=setTimeout(()=>{if($('tools').hidden)c.classList.remove('visible');},1800);}
+  document.addEventListener('pointermove',e=>{if(e.clientY>innerHeight-90)reveal();});document.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')reveal();});
+  $('more').onclick=()=>{const show=$('tools').hidden;$('tools').hidden=!show;$('more').setAttribute('aria-expanded',String(show));reveal();};
+  function closeTools(){$('tools').hidden=true;$('more').setAttribute('aria-expanded','false');$('controls').classList.remove('visible');}
+  $('home').onclick=()=>{go(0);closeTools();};
+  const directory=$('directory');entries.forEach(e=>{const b=document.createElement('button');b.className='thumb';b.setAttribute('aria-label','跳转到'+e.label);const p=document.createElement('div');p.className='preview';const im=new Image();im.src=e.thumb;im.alt='';im.loading='lazy';p.append(im);const label=document.createElement('span');label.textContent=e.label;b.append(p,label);b.onclick=()=>{go(Math.ceil(e.page/2));directory.close();};$('thumbs').append(b);});
+  $('contents').onclick=()=>{syncUI();directory.showModal();closeTools();};
+  function openZoom(){if(turning)return;const p=$('large-pages');p.className='';p.replaceChildren();for(const i of spreadPages(spread)){const im=new Image();im.src=urls[i];im.alt=i===LAST?'封底':`第 ${i+1} 页`;im.onclick=()=>p.classList.toggle('detail');p.append(im);}$('enlargement').showModal();closeTools();}
+  $('zoom').onclick=openZoom;
+  document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
+  document.querySelectorAll('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}}));
+  const fs=$('fullscreen');if(!document.documentElement.requestFullscreen)fs.hidden=true;fs.onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch(e){}closeTools();};
+  window.addEventListener('resize',resize);renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();$('loading').hidden=false;$('loading').textContent='图形渲染已暂停，刷新页面可恢复。';});
+  afterPagesLoad(0,()=>{
+    resize();
+    layOut();
+    renderer.render(scene,camera);
+    canvas.style.visibility='';
+    warm();
+  });
+})();
+</script>
+</body><!--
+The MIT License
+
+Copyright © 2010-2023 three.js authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+-->
 </html>
